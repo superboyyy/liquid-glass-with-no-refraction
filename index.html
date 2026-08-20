@@ -1,0 +1,414 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-lg-theme="dark">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <title>Liquid Glass — no refraction</title>
+    <link rel="stylesheet" href="./src/liquid-glass.css" />
+    <style>
+      :root {
+        color-scheme: dark;
+        --page-bg: #0c1018;
+      }
+
+      html[data-lg-theme="light"] {
+        color-scheme: light;
+        --page-bg: #dfe6f2;
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+
+      html,
+      body {
+        margin: 0;
+        min-height: 100%;
+      }
+
+      body {
+        font-family: "SF Pro Display", "SF Pro Text", "PingFang SC", "Hiragino Sans GB",
+          "Helvetica Neue", system-ui, sans-serif;
+        background: var(--page-bg);
+        color: inherit;
+      }
+
+      .scene {
+        position: relative;
+        min-height: 100vh;
+        overflow: hidden;
+      }
+
+      .wallpaper {
+        position: fixed;
+        inset: 0;
+        z-index: 0;
+        background:
+          radial-gradient(42% 48% at 18% 22%, #ff6b8a 0%, transparent 58%),
+          radial-gradient(38% 42% at 82% 18%, #6d7cff 0%, transparent 55%),
+          radial-gradient(46% 50% at 70% 78%, #32d4a4 0%, transparent 60%),
+          radial-gradient(30% 34% at 28% 82%, #ffc14a 0%, transparent 58%),
+          linear-gradient(180deg, #1a1028, #0b1220 70%);
+        filter: saturate(1.15);
+      }
+
+      html[data-lg-theme="light"] .wallpaper {
+        background:
+          radial-gradient(42% 48% at 18% 22%, #ff9eb3 0%, transparent 58%),
+          radial-gradient(38% 42% at 82% 18%, #9aa6ff 0%, transparent 55%),
+          radial-gradient(46% 50% at 70% 78%, #7ce0c2 0%, transparent 60%),
+          radial-gradient(30% 34% at 28% 82%, #ffd889 0%, transparent 58%),
+          linear-gradient(180deg, #f4f1ff, #e8eef8 70%);
+      }
+
+      .album-stack {
+        position: fixed;
+        inset: 0;
+        z-index: 0;
+        display: grid;
+        place-items: center;
+        pointer-events: none;
+      }
+
+      .album {
+        width: min(52vw, 420px);
+        aspect-ratio: 1;
+        border-radius: 28px;
+        background:
+          linear-gradient(145deg, rgb(255 255 255 / 0.18), transparent 40%),
+          conic-gradient(from 210deg, #ff5d7a, #6a74ff, #2fd4a8, #ffc258, #ff5d7a);
+        box-shadow: 0 40px 90px rgb(0 0 0 / 0.35);
+        transform: rotate(-8deg);
+      }
+
+      .shell {
+        position: relative;
+        z-index: 1;
+        display: flex;
+        flex-direction: column;
+        min-height: 100vh;
+      }
+
+      .top {
+        position: sticky;
+        top: 0;
+        z-index: 5;
+      }
+
+      .brand {
+        font-size: 20px;
+        font-weight: 750;
+        letter-spacing: -0.03em;
+        text-decoration: none;
+        color: inherit;
+      }
+
+      .nav-links {
+        display: flex;
+        gap: 8px;
+        margin-left: auto;
+        margin-right: 12px;
+      }
+
+      .nav-links a {
+        color: inherit;
+        text-decoration: none;
+        padding: 8px 12px;
+        border-radius: 999px;
+        font-size: 14px;
+        font-weight: 600;
+        opacity: 0.8;
+      }
+
+      .nav-links a:hover,
+      .nav-links a[aria-current="page"] {
+        opacity: 1;
+        background: rgb(255 255 255 / 0.08);
+      }
+
+      .content {
+        width: min(1120px, calc(100% - 32px));
+        margin: 28px auto 120px;
+        display: grid;
+        gap: 22px;
+      }
+
+      .hero {
+        display: grid;
+        grid-template-columns: 1.15fr 0.85fr;
+        gap: 18px;
+      }
+
+      h1 {
+        margin: 0 0 10px;
+        font-size: clamp(28px, 4vw, 44px);
+        line-height: 1.08;
+        letter-spacing: -0.04em;
+      }
+
+      .lede {
+        margin: 0;
+        max-width: 42ch;
+        font-size: 16px;
+        line-height: 1.55;
+        color: var(--lg-text-muted);
+      }
+
+      .row {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 10px;
+        margin-top: 22px;
+      }
+
+      .meta {
+        display: grid;
+        gap: 12px;
+      }
+
+      .stat {
+        display: flex;
+        justify-content: space-between;
+        gap: 12px;
+        font-size: 14px;
+      }
+
+      .stat b {
+        font-variant-numeric: tabular-nums;
+      }
+
+      .grid {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 14px;
+      }
+
+      .card h3 {
+        margin: 0 0 6px;
+        font-size: 16px;
+      }
+
+      .card p {
+        margin: 0;
+        color: var(--lg-text-muted);
+        font-size: 13px;
+        line-height: 1.45;
+      }
+
+      .cover {
+        height: 92px;
+        margin-bottom: 12px;
+        border-radius: 14px;
+        background: linear-gradient(135deg, var(--c1), var(--c2));
+      }
+
+      code {
+        font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+        font-size: 13px;
+      }
+
+      pre {
+        margin: 0;
+        overflow: auto;
+        font-size: 13px;
+        line-height: 1.5;
+      }
+
+      .player {
+        position: sticky;
+        bottom: 0;
+        z-index: 5;
+      }
+
+      .now {
+        display: flex;
+        align-items: center;
+        gap: 14px;
+        min-width: 220px;
+      }
+
+      .now-art {
+        width: 48px;
+        height: 48px;
+        border-radius: 12px;
+        background: linear-gradient(135deg, #ff6b8a, #6d7cff);
+      }
+
+      .now small {
+        display: block;
+        color: var(--lg-text-muted);
+      }
+
+      .controls {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 8px;
+        flex: 1;
+      }
+
+      .progress {
+        flex: 1;
+        height: 5px;
+        border-radius: 999px;
+        background: rgb(255 255 255 / 0.18);
+        overflow: hidden;
+      }
+
+      .progress > span {
+        display: block;
+        width: 38%;
+        height: 100%;
+        background: rgb(255 255 255 / 0.8);
+      }
+
+      html[data-lg-theme="light"] .progress {
+        background: rgb(0 0 0 / 0.12);
+      }
+
+      html[data-lg-theme="light"] .progress > span {
+        background: rgb(20 20 28 / 0.7);
+      }
+
+      .toggles {
+        display: flex;
+        gap: 8px;
+      }
+
+      @media (max-width: 860px) {
+        .hero,
+        .grid {
+          grid-template-columns: 1fr;
+        }
+
+        .nav-links {
+          display: none;
+        }
+
+        .now small {
+          display: none;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="scene">
+      <div class="wallpaper" aria-hidden="true"></div>
+      <div class="album-stack" aria-hidden="true"><div class="album"></div></div>
+      <div class="lg-dim" style="position: fixed; inset: 0; z-index: 0; pointer-events: none"></div>
+
+      <div class="shell">
+        <header class="top">
+          <nav class="lg lg--regular lg-nav lg--grounded lg--interactive" aria-label="主导航">
+            <a class="brand" href="./">Liquid Glass</a>
+            <div class="nav-links">
+              <a href="#usage" aria-current="page">用法</a>
+              <a href="#components">组件</a>
+              <a href="https://github.com/superboyyy/liquid-glass-with-no-refraction">GitHub</a>
+            </div>
+            <div class="toggles">
+              <button class="lg lg--regular lg-button lg-button--icon" id="theme-btn" type="button" aria-label="切换浅色/深色">◐</button>
+              <button class="lg lg--regular lg-button" id="variant-btn" type="button">Regular</button>
+            </div>
+          </nav>
+        </header>
+
+        <main class="content">
+          <section class="hero">
+            <article class="lg lg--regular lg-panel lg--interactive" id="hero-card">
+              <span class="lg lg--regular lg-pill">无折射 · 纯 CSS</span>
+              <h1>iOS 27 味的毛玻璃，只做模糊和高光。</h1>
+              <p class="lede">
+                从 OMusic 网站顶栏/底栏那套 <code>blur + saturate</code> 出发，补上边缘高光、厚度和投影，刻意不做位移折射。
+              </p>
+              <div class="row">
+                <a class="lg lg--regular lg-button lg-button--prominent" href="#usage">开始使用</a>
+                <a class="lg lg--regular lg-button" href="./src/liquid-glass.css">查看 CSS</a>
+              </div>
+            </article>
+
+            <aside class="lg lg--regular lg-panel meta lg--interactive">
+              <div class="stat"><span>Backdrop</span><b>blur 20px · saturate 180%</b></div>
+              <div class="stat"><span>Highlight</span><b>顶缘高光 + 斜向光泽</b></div>
+              <div class="stat"><span>Rim</span><b>1px 渐变描边</b></div>
+              <div class="stat"><span>Refraction</span><b>无</b></div>
+              <div class="stat"><span>Runtime</span><b>0 KB CSS-only</b></div>
+            </aside>
+          </section>
+
+          <section class="grid" id="components">
+            <article class="lg lg--regular lg-panel card">
+              <div class="cover" style="--c1: #ff6b8a; --c2: #6d7cff"></div>
+              <h3>面板 Panel</h3>
+              <p class="lede">卡片、对话框、悬浮层。Regular 可叠在任意内容上。</p>
+            </article>
+            <article class="lg lg--regular lg-panel card">
+              <div class="cover" style="--c1: #32d4a4; --c2: #6d7cff"></div>
+              <h3>胶囊按钮</h3>
+              <p class="lede">hover 提亮、按下缩放 0.98，适合播放控制和工具栏。</p>
+            </article>
+            <article class="lg lg--regular lg-panel card">
+              <div class="cover" style="--c1: #ffc14a; --c2: #ff6b8a"></div>
+              <h3>Clear 变体</h3>
+              <p class="lede">更薄的霜，适合封面上方。请配合 <code>.lg-dim</code> 保证字可读。</p>
+            </article>
+          </section>
+
+          <section class="lg lg--regular lg-panel" id="usage">
+            <h3>用法</h3>
+            <pre><code>&lt;link rel="stylesheet" href="src/liquid-glass.css" /&gt;
+
+&lt;div class="lg lg--regular lg-panel"&gt;
+  毛玻璃内容
+&lt;/div&gt;</code></pre>
+          </section>
+        </main>
+
+        <footer class="player">
+          <div class="lg lg--regular lg-tabbar lg--grounded lg--interactive">
+            <div class="now">
+              <div class="now-art" aria-hidden="true"></div>
+              <div>
+                <strong>No Refraction</strong>
+                <small>Liquid Glass Kit</small>
+              </div>
+            </div>
+            <div class="controls">
+              <button class="lg lg--regular lg-button lg-button--icon" type="button" aria-label="上一首">⏮</button>
+              <button class="lg lg--regular lg-button lg-button--icon lg-button--prominent" type="button" aria-label="播放">▶</button>
+              <button class="lg lg--regular lg-button lg-button--icon" type="button" aria-label="下一首">⏭</button>
+              <div class="progress" aria-hidden="true"><span></span></div>
+            </div>
+          </div>
+        </footer>
+      </div>
+    </div>
+
+    <script type="module">
+      import { attachLiquidGlassPointer } from "./src/liquid-glass-pointer.js";
+
+      attachLiquidGlassPointer();
+
+      const root = document.documentElement;
+      const themeBtn = document.getElementById("theme-btn");
+      const variantBtn = document.getElementById("variant-btn");
+      let variant = "regular";
+
+      const glasses = () => document.querySelectorAll(".lg");
+
+      themeBtn.addEventListener("click", () => {
+        const next = root.getAttribute("data-lg-theme") === "dark" ? "light" : "dark";
+        root.setAttribute("data-lg-theme", next);
+      });
+
+      variantBtn.addEventListener("click", () => {
+        variant = variant === "regular" ? "clear" : "regular";
+        variantBtn.textContent = variant === "regular" ? "Regular" : "Clear";
+        glasses().forEach((node) => {
+          node.classList.toggle("lg--regular", variant === "regular");
+          node.classList.toggle("lg--clear", variant === "clear");
+        });
+      });
+    </script>
+  </body>
+</html>

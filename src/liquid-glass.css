@@ -1,0 +1,276 @@
+/*!
+ * liquid-glass-with-no-refraction
+ * iOS 27-style frosted glass for the web: blur, tint, rim, specular.
+ * No SVG displacement, no WebGL, no chromatic aberration.
+ */
+
+:root,
+[data-lg-theme="dark"] {
+  --lg-blur: 20px;
+  --lg-saturate: 180%;
+  --lg-tint: 255 255 255;
+  --lg-tint-opacity: 0.14;
+  --lg-fill: rgb(var(--lg-tint) / var(--lg-tint-opacity));
+  --lg-fill-fallback: rgb(var(--lg-tint) / 0.72);
+  --lg-highlight: rgb(255 255 255 / 0.58);
+  --lg-sheen: rgb(255 255 255 / 0.38);
+  --lg-inner-shadow: rgb(0 0 0 / 0.22);
+  --lg-shadow: 0 10px 28px rgb(0 0 0 / 0.28), 0 1px 2px rgb(0 0 0 / 0.12);
+  --lg-radius: 20px;
+  --lg-rim-top: rgb(255 255 255 / 0.55);
+  --lg-rim-side: rgb(255 255 255 / 0.16);
+  --lg-rim-bottom: rgb(0 0 0 / 0.28);
+  --lg-focus: rgb(255 255 255 / 0.7);
+  --lg-text: rgb(255 255 255 / 0.94);
+  --lg-text-muted: rgb(255 255 255 / 0.62);
+  --lg-pointer-x: 50%;
+  --lg-pointer-y: 18%;
+}
+
+[data-lg-theme="light"] {
+  --lg-blur: 22px;
+  --lg-saturate: 150%;
+  --lg-tint: 255 255 255;
+  --lg-tint-opacity: 0.42;
+  --lg-fill: rgb(var(--lg-tint) / var(--lg-tint-opacity));
+  --lg-fill-fallback: rgb(248 248 252 / 0.88);
+  --lg-highlight: rgb(255 255 255 / 0.85);
+  --lg-sheen: rgb(255 255 255 / 0.55);
+  --lg-inner-shadow: rgb(0 0 0 / 0.08);
+  --lg-shadow: 0 10px 28px rgb(0 0 0 / 0.1), 0 1px 2px rgb(0 0 0 / 0.06);
+  --lg-rim-top: rgb(255 255 255 / 0.9);
+  --lg-rim-side: rgb(255 255 255 / 0.35);
+  --lg-rim-bottom: rgb(0 0 0 / 0.14);
+  --lg-focus: rgb(20 20 24 / 0.45);
+  --lg-text: rgb(20 20 28 / 0.92);
+  --lg-text-muted: rgb(20 20 28 / 0.55);
+}
+
+.lg {
+  --lg-fill-current: var(--lg-fill-fallback);
+  position: relative;
+  isolation: isolate;
+  color: var(--lg-text);
+  background: var(--lg-fill-current);
+  border-radius: var(--lg-radius);
+  box-shadow:
+    var(--lg-shadow),
+    inset 0 1px 0 var(--lg-highlight),
+    inset 0 -10px 22px var(--lg-inner-shadow);
+}
+
+.lg::before,
+.lg::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  pointer-events: none;
+}
+
+.lg::before {
+  z-index: 0;
+  background:
+    radial-gradient(
+      120% 70% at var(--lg-pointer-x) var(--lg-pointer-y),
+      var(--lg-sheen),
+      transparent 42%
+    ),
+    linear-gradient(165deg, var(--lg-sheen), transparent 38%);
+  opacity: 0.85;
+}
+
+.lg::after {
+  z-index: 1;
+  padding: 1px;
+  background: linear-gradient(
+    180deg,
+    var(--lg-rim-top),
+    var(--lg-rim-side) 38%,
+    var(--lg-rim-bottom)
+  );
+  -webkit-mask:
+    linear-gradient(#000 0 0) content-box,
+    linear-gradient(#000 0 0);
+  -webkit-mask-composite: xor;
+  mask:
+    linear-gradient(#000 0 0) content-box,
+    linear-gradient(#000 0 0);
+  mask-composite: exclude;
+}
+
+.lg > * {
+  position: relative;
+  z-index: 2;
+}
+
+@supports ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) {
+  .lg {
+    --lg-fill-current: var(--lg-fill);
+    -webkit-backdrop-filter: blur(var(--lg-blur)) saturate(var(--lg-saturate));
+    backdrop-filter: blur(var(--lg-blur)) saturate(var(--lg-saturate));
+  }
+}
+
+.lg--regular {
+  --lg-blur: 20px;
+  --lg-saturate: 180%;
+  --lg-tint-opacity: 0.14;
+}
+
+[data-lg-theme="light"] .lg--regular,
+[data-lg-theme="light"].lg--regular {
+  --lg-tint-opacity: 0.42;
+}
+
+.lg--clear {
+  --lg-blur: 10px;
+  --lg-saturate: 190%;
+  --lg-tint-opacity: 0.06;
+  --lg-sheen: rgb(255 255 255 / 0.5);
+  --lg-highlight: rgb(255 255 255 / 0.7);
+}
+
+[data-lg-theme="light"] .lg--clear,
+[data-lg-theme="light"].lg--clear {
+  --lg-tint-opacity: 0.22;
+  --lg-blur: 12px;
+}
+
+.lg-dim {
+  background: rgb(0 0 0 / 0.28);
+}
+
+[data-lg-theme="light"] .lg-dim {
+  background: rgb(255 255 255 / 0.18);
+}
+
+.lg--grounded {
+  --lg-shadow: 0 1px 0 rgb(0 0 0 / 0.12);
+  --lg-radius: 0;
+}
+
+.lg--capsule {
+  --lg-radius: 999px;
+}
+
+.lg-panel {
+  padding: 20px 22px;
+}
+
+.lg-nav {
+  --lg-radius: 0;
+  --lg-shadow: 0 1px 0 rgb(255 255 255 / 0.08), 0 8px 24px rgb(0 0 0 / 0.12);
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  min-height: 64px;
+  padding: 0 22px;
+}
+
+[data-lg-theme="light"] .lg-nav {
+  --lg-shadow: 0 1px 0 rgb(0 0 0 / 0.06), 0 8px 24px rgb(0 0 0 / 0.04);
+}
+
+.lg-tabbar {
+  --lg-radius: 0;
+  --lg-shadow: 0 -1px 0 rgb(255 255 255 / 0.08), 0 -8px 24px rgb(0 0 0 / 0.12);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  min-height: 80px;
+  padding: 10px 22px calc(10px + env(safe-area-inset-bottom));
+}
+
+[data-lg-theme="light"] .lg-tabbar {
+  --lg-shadow: 0 -1px 0 rgb(0 0 0 / 0.06), 0 -8px 24px rgb(0 0 0 / 0.04);
+}
+
+.lg-button {
+  --lg-radius: 999px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  min-height: 40px;
+  padding: 0 16px;
+  border: 0;
+  color: inherit;
+  font: inherit;
+  cursor: pointer;
+  -webkit-appearance: none;
+  appearance: none;
+  text-decoration: none;
+  transition: transform 160ms ease, filter 160ms ease;
+}
+
+.lg-button:hover {
+  filter: brightness(1.08);
+}
+
+.lg-button:active {
+  transform: scale(0.98);
+}
+
+.lg-button--icon {
+  width: 40px;
+  padding: 0;
+}
+
+.lg-button--prominent {
+  --lg-tint: 255 255 255;
+  --lg-tint-opacity: 0.28;
+  font-weight: 600;
+}
+
+[data-lg-theme="light"] .lg-button--prominent {
+  --lg-tint-opacity: 0.7;
+}
+
+.lg-pill {
+  --lg-radius: 999px;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  min-height: 32px;
+  padding: 0 12px;
+  font-size: 13px;
+  font-weight: 600;
+}
+
+.lg-sheet {
+  --lg-radius: 24px 24px 0 0;
+  padding: 16px 20px calc(20px + env(safe-area-inset-bottom));
+}
+
+.lg:focus-visible,
+.lg-button:focus-visible {
+  outline: 2px solid var(--lg-focus);
+  outline-offset: 3px;
+}
+
+.lg--interactive {
+  --lg-pointer-x: 50%;
+  --lg-pointer-y: 18%;
+}
+
+@media (prefers-reduced-transparency: reduce) {
+  .lg {
+    --lg-fill-current: var(--lg-fill-fallback);
+    -webkit-backdrop-filter: none;
+    backdrop-filter: none;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .lg-button {
+    transition: none;
+  }
+}
+
+@media (prefers-contrast: more) {
+  .lg {
+    --lg-tint-opacity: 0.72;
+    --lg-fill-current: rgb(var(--lg-tint) / 0.82);
+  }
+}

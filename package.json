@@ -1,0 +1,24 @@
+{
+  "name": "liquid-glass-with-no-refraction",
+  "version": "1.0.0",
+  "description": "Frosted-glass CSS kit in the iOS 27 Liquid Glass vein for web — blur and highlights, no refraction.",
+  "license": "MIT",
+  "style": "src/liquid-glass.css",
+  "exports": {
+    ".": "./src/liquid-glass.css",
+    "./css": "./src/liquid-glass.css",
+    "./pointer": "./src/liquid-glass-pointer.js"
+  },
+  "files": ["src", "LICENSE", "README.md"],
+  "scripts": {
+    "test": "node test/no-refraction.test.mjs"
+  },
+  "keywords": [
+    "liquid-glass",
+    "glassmorphism",
+    "css",
+    "backdrop-filter",
+    "ios-27",
+    "frosted-glass"
+  ]
+}
