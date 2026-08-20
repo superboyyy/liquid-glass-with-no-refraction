@@ -3,241 +3,667 @@ import Base from '../layouts/Base.astro';
 import Nav from '../components/Nav.astro';
 import Footer from '../components/Footer.astro';
 
-const promo = [
-  { tag: 'Material', title: 'Frosted, not liquid', desc: 'Blur, saturation, and inner highlights. No displacement map, no chromatic split, no fake IOR.' },
-  { tag: 'Prefix', title: 'nrg- everywhere', desc: 'Drop css/nrg.css into any page. Classes are prefixed so they will not collide with your app.' },
-  { tag: 'Patterns', title: 'A whole marketing page', desc: 'Pill nav, aurora hero, snap carousel, compare table, reviews, plans, and hash modals.' },
-  { tag: 'Motion', title: 'Scroll, then stop', desc: 'Reveal-on-view, staggered children, hero parallax. Respects prefers-reduced-motion.' },
-  { tag: 'Theme', title: 'One accent token', desc: 'Swap --nrg-accent and the buttons, stars, and glass CTAs follow. Light and dark included.' },
+const recipe = [
+  {
+    kind: 'do',
+    label: 'Blur + saturate',
+    body: 'backdrop-filter: blur(18–24px) saturate(1.35–1.45). Frost is the material.',
+  },
+  {
+    kind: 'do',
+    label: 'Inner highlight rim',
+    body: 'Inset light and soft shade so panels read as glass, not flat opacity.',
+  },
+  {
+    kind: 'do',
+    label: 'Predictable in Safari',
+    body: 'Same recipe in Chromium and WebKit. No filter stack that melts on iOS.',
+  },
+  {
+    kind: 'skip',
+    label: 'What we skip',
+    body: 'feDisplacementMap · WebGL IOR · chromatic split. Edges stay sharp under the frost.',
+  },
 ];
 
-const more = [
-  { tag: 'Nav', title: 'Floating pill', desc: 'Fixed frosted bar with brand, links, and a capsule CTA.' },
-  { tag: 'Hero', title: 'Aurora wash', desc: 'Layered radials, pause control, copy that fades as you scroll.' },
-  { tag: 'Glass', title: 'Two strengths', desc: 'Default blur(18px) or --strong at 24px. Pill and scroll variants included.' },
-  { tag: 'Docs', title: 'Copy the HTML', desc: 'The components page is a kitchen sink with snippets, not a component framework.' },
-];
+const snippet = `<link rel="stylesheet" href="nrg.css" />
+<script type="module" src="nrg.js"></script>
+<body class="nrg-root">
+  <div class="nrg-glass">Hello, frosted world.</div>
+</body>`;
 
-const compareRows = [
-  { name: 'backdrop-filter blur', cells: [true, true, true] },
-  { name: 'Inner highlight rim', cells: [true, true, true] },
-  { name: 'CSS variables / theming', cells: [true, true, true] },
-  { name: 'Safari-stable fallback', cells: [true, true, true] },
-  { name: 'Marketing patterns', cells: [false, true, true] },
-  { name: 'Reveal + carousel JS', cells: [false, true, true] },
-  { name: 'SVG displacement / IOR', cells: [false, false, false] },
-  { name: 'WebGL refraction', cells: [false, false, false] },
-];
-
-const reviews = [
-  { title: 'Finally, just glass', body: 'I wanted the Apple marketing-site look without a 200-line SVG filter. This is that.', author: 'Maya K.', note: 'Design engineer' },
-  { title: 'Does not melt on Safari', body: 'The no-refraction call is the feature. Blur and highlights render the same in Chromium and WebKit.', author: 'Jon Park', note: 'Frontend' },
-  { title: 'Ships as CSS', body: 'Copied two files, restyled a docs site in an afternoon. Prefix kept our existing classes intact.', author: 'Rin', note: 'Indie hacker' },
-];
-
-const plans = [
-  { name: 'CSS', price: 'nrg.css', desc: 'Tokens, glass, type, and patterns.', points: ['Drop-in stylesheet', 'nrg- class prefix', 'Light and dark tokens'], featured: false },
-  { name: 'CSS + JS', price: 'nrg.js', desc: 'Reveal, carousel, hero, modals.', points: ['Intersection reveals', 'Snap carousels', 'Hash-driven dialogs'], featured: true },
-  { name: 'Demo', price: 'This site', desc: 'A full landing page built only with the kit.', points: ['Kitchen sink', 'Theme playground', 'MIT license'], featured: false },
-];
+const wallText = 'NO REFRACTION · BLUR ONLY · FROST · HIGHLIGHT · SATURATE · ';
 ---
 
-<Base>
+<Base title="No Refraction — Liquid Glass CSS" description="Frosted-glass CSS kit: blur and inner highlights only. No displacement maps, no IOR, no refraction.">
+  <Fragment slot="head">
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Instrument+Sans:wght@500;600;700&display=swap" rel="stylesheet" />
+  </Fragment>
+
   <Nav current="home" />
-  <main>
-    <section class="nrg-hero" id="top">
-      <div class="nrg-hero__bg" aria-hidden="true"></div>
-      <div class="nrg-hero__content" data-nrg-parallax>
-        <h1 class="nrg-hero__headline">Liquid Glass<br />with No Refraction</h1>
-        <p class="nrg-hero__sub">磨砂、高光、胶囊导航。接近 iOS 27 Liquid Glass 的观感，故意不做折射。</p>
-        <a class="nrg-btn nrg-btn--accent" href="#install">Get the CSS</a>
+  <main class="bench">
+    <section class="bench-hero" id="top">
+      <div class="bench-hero__field" aria-hidden="true">
+        <div class="bench-hero__drift"></div>
       </div>
-      <button class="nrg-hero__pause" type="button" data-nrg-hero-pause aria-label="Pause background">
-        <svg viewBox="0 0 24 24" width="14" height="14" aria-hidden="true"><rect x="6" y="5" width="4" height="14" rx="1" fill="currentColor"/><rect x="14" y="5" width="4" height="14" rx="1" fill="currentColor"/></svg>
-      </button>
+      <div class="bench-hero__content nrg-reveal">
+        <p class="bench-brand">No Refraction</p>
+        <h1 class="bench-hero__line">磨砂与高光。Blur only — 无位移、无 IOR、无色散。</h1>
+        <div class="bench-hero__cta">
+          <a class="nrg-btn nrg-btn--accent" href="#install">Get CSS</a>
+          <a class="nrg-btn nrg-btn--ghost bench-hero__ghost" href="/components">Components</a>
+        </div>
+      </div>
     </section>
 
-    <section class="nrg-section nrg-section--alt" id="why">
-      <div class="nrg-docs-h nrg-reveal">
-        <h2 class="nrg-headline">Why this kit</h2>
+    <section class="bench-stage-wrap" id="stage">
+      <div class="bench-stage-intro nrg-reveal" data-nrg-stagger>
+        <h2 class="bench-stage-intro__title">Optical bench</h2>
+        <p class="bench-stage-intro__sub">换嘈杂背景，看磨砂如何吃掉细节；边缘仍清晰 —— 这就是 no refraction。</p>
       </div>
-      <div class="nrg-carousel" data-nrg-carousel>
-        <div class="nrg-carousel__track" data-nrg-track>
-          {promo.map((card) => (
-            <article class="nrg-pcard nrg-glass">
-              <div class="nrg-pcard__tag">{card.tag}</div>
-              <h3 class="nrg-pcard__title">{card.title}</h3>
-              <p class="nrg-pcard__desc">{card.desc}</p>
+
+      <div class="bench-stage nrg-reveal" data-bench-stage>
+        <div class="bench-stage__viewport" data-bench-viewport data-backdrop="stripes">
+          <div class="bench-backdrop bench-backdrop--stripes" aria-hidden="true"></div>
+          <div class="bench-backdrop bench-backdrop--wall" aria-hidden="true">
+            <div class="bench-wall">
+              {Array.from({ length: 14 }).map(() => (
+                <p>{wallText.repeat(3)}</p>
+              ))}
+            </div>
+          </div>
+          <div class="bench-backdrop bench-backdrop--grid" aria-hidden="true"></div>
+
+          <div class="bench-specimens" data-bench-specimens data-strength="default">
+            <div class="bench-float bench-float--a nrg-glass nrg-glass--pill specimen-surface">
+              <span class="bench-chip">nrg-glass--pill</span>
+              <span class="bench-chip-dim">18px</span>
+            </div>
+
+            <article class="bench-float bench-float--b nrg-glass specimen-surface">
+              <p class="bench-specimen__tag">Specimen</p>
+              <h3 class="bench-specimen__title">Frost, not lens</h3>
+              <p class="bench-specimen__body">Translucent fill, saturate, inset light. The backdrop softens; type does not warp.</p>
             </article>
+
+            <article class="bench-float bench-float--c nrg-glass nrg-glass--strong specimen-surface">
+              <p class="bench-specimen__tag">Strong</p>
+              <h3 class="bench-specimen__title">blur(24px)</h3>
+              <p class="bench-specimen__body">Same recipe, heavier frost. Still no displacement map.</p>
+              <div class="bench-specimen__row">
+                <span class="nrg-btn nrg-btn--accent nrg-btn--sm">Accent</span>
+                <span class="nrg-btn nrg-btn--ghost nrg-btn--sm bench-ghost-on-stage">Ghost</span>
+              </div>
+            </article>
+          </div>
+        </div>
+
+        <div class="bench-controls" role="group" aria-label="Specimen controls">
+          <div class="bench-controls__group">
+            <span class="bench-controls__label">Backdrop</span>
+            <div class="bench-controls__btns">
+              <button class="bench-toggle is-on" type="button" data-backdrop-btn="stripes">Stripes</button>
+              <button class="bench-toggle" type="button" data-backdrop-btn="wall">Type wall</button>
+              <button class="bench-toggle" type="button" data-backdrop-btn="grid">Grid</button>
+            </div>
+          </div>
+          <div class="bench-controls__group">
+            <span class="bench-controls__label">Blur</span>
+            <div class="bench-controls__btns">
+              <button class="bench-toggle is-on" type="button" data-strength-btn="default">Default</button>
+              <button class="bench-toggle" type="button" data-strength-btn="strong">Strong</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="nrg-section" id="recipe">
+      <div class="bench-recipe nrg-reveal" data-nrg-stagger>
+        <div class="bench-recipe__head">
+          <h2 class="bench-recipe__title">Recipe</h2>
+          <p class="bench-recipe__sub">Four lines. The last one is the product.</p>
+        </div>
+        <ul class="bench-recipe__list">
+          {recipe.map((item) => (
+            <li class:list={['bench-recipe__item', item.kind === 'skip' && 'bench-recipe__item--skip']}>
+              <span class="bench-recipe__kind">{item.kind === 'skip' ? 'Skip' : 'Do'}</span>
+              <div>
+                <h3 class="bench-recipe__label">{item.label}</h3>
+                <p class="bench-recipe__body">{item.body}</p>
+              </div>
+            </li>
           ))}
-        </div>
-        <div class="nrg-carousel__nav">
-          <button class="nrg-carousel__arrow" type="button" data-nrg-prev aria-label="Previous" disabled>
-            <svg viewBox="0 0 24 24" width="18" height="18"><path d="M15 5l-7 7 7 7" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
-          </button>
-          <button class="nrg-carousel__arrow" type="button" data-nrg-next aria-label="Next">
-            <svg viewBox="0 0 24 24" width="18" height="18"><path d="M9 5l7 7-7 7" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
-          </button>
-        </div>
-      </div>
-    </section>
-
-    <section class="nrg-media">
-      <div class="nrg-media__frame nrg-media--piano nrg-glass nrg-glass--strong nrg-reveal">
-        <div class="nrg-media__overlay"></div>
-        <div class="nrg-media__text">
-          <p class="nrg-media__eyebrow">Material</p>
-          <h2 class="nrg-media__headline">Blur is the whole trick.</h2>
-        </div>
-        <p class="nrg-media__note">No feDisplacementMap · No WebGL</p>
-      </div>
-    </section>
-
-    <section class="nrg-section" id="features">
-      <div class="nrg-split">
-        <div class="nrg-split__row nrg-reveal" data-nrg-stagger>
-          <div class="nrg-split__text">
-            <p class="nrg-split__tag">Surfaces</p>
-            <h2 class="nrg-split__headline">Glass that stays put</h2>
-            <p class="nrg-copy">The source site skipped refraction on purpose. This kit keeps that: translucent fill, saturate, inset light. Same in Safari and Chrome.</p>
-          </div>
-          <div class="nrg-split__tile nrg-glass nrg-glass--strong" style="background: linear-gradient(160deg, #c0143a, #7a0e44); color: #fff;">
-            <p class="nrg-headline" style="font-size: 36px; color: #fff;">frosted</p>
-          </div>
-        </div>
-        <div class="nrg-split__row nrg-split__row--flip nrg-reveal" data-nrg-stagger>
-          <div class="nrg-split__text">
-            <p class="nrg-split__tag">Tokens</p>
-            <h2 class="nrg-split__headline">One accent, whole page</h2>
-            <p class="nrg-copy">--nrg-accent drives buttons, tags, stars, and featured plan rings. Dark theme swaps the gray scale, not the glass recipe.</p>
-          </div>
-          <div class="nrg-split__tile nrg-glass" style="background: var(--nrg-bg-alt);">
-            <span class="nrg-btn nrg-btn--accent">Accent</span>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <section class="nrg-section nrg-section--alt">
-      <div class="nrg-docs-h nrg-reveal">
-        <h2 class="nrg-headline">And the rest of the page</h2>
-      </div>
-      <div class="nrg-bento">
-        {more.map((card) => (
-          <article class="nrg-mcard nrg-glass nrg-reveal">
-            <div class="nrg-mcard__tag">{card.tag}</div>
-            <h3 class="nrg-mcard__title">{card.title}</h3>
-            <p class="nrg-mcard__desc">{card.desc}</p>
-          </article>
-        ))}
-      </div>
-    </section>
-
-    <section class="nrg-section nrg-compare" id="compare">
-      <div class="nrg-compare__head nrg-reveal" data-nrg-stagger>
-        <h2 class="nrg-compare__title">What you get. What you don’t.</h2>
-        <p class="nrg-compare__sub">Refraction is a non-goal, listed in the last rows on purpose.</p>
-      </div>
-      <div class="nrg-compare__scroll nrg-glass nrg-glass--scroll nrg-reveal">
-        <table class="nrg-compare__table">
-          <thead>
-            <tr>
-              <th scope="col"></th>
-              <th scope="col">Tokens</th>
-              <th scope="col">Patterns</th>
-              <th scope="col" class="is-accent">This kit</th>
-            </tr>
-          </thead>
-          <tbody>
-            {compareRows.map((row) => (
-              <tr>
-                <th scope="row">{row.name}</th>
-                {row.cells.map((on, i) => (
-                  <td class={i === 2 ? 'is-accent' : undefined}>
-                    {on ? (
-                      <svg viewBox="0 0 24 24" width="17" height="17" aria-label="Yes"><path fill="currentColor" d="M9.55 17.05 4.5 12l1.4-1.4 3.65 3.65 8.55-8.55 1.4 1.4z"/></svg>
-                    ) : (
-                      <span class="nrg-compare__dash">—</span>
-                    )}
-                  </td>
-                ))}
-              </tr>
-            ))}
-          </tbody>
-        </table>
-      </div>
-    </section>
-
-    <section class="nrg-section nrg-section--alt" id="reviews">
-      <div class="nrg-reviews__head nrg-reveal" data-nrg-stagger>
-        <h2 class="nrg-reviews__title">What people would say</h2>
-        <div class="nrg-reviews__summary">
-          <span class="nrg-reviews__score">5.0</span>
-          <span class="nrg-stars nrg-stars--lg" aria-hidden="true">
-            {Array.from({ length: 5 }).map(() => <span class="nrg-star nrg-star--full"></span>)}
-          </span>
-          <span class="nrg-reviews__note">Demo quotes, not App Store reviews</span>
-        </div>
-      </div>
-      <div class="nrg-reviews__grid nrg-reveal" data-nrg-stagger>
-        {reviews.map((review) => (
-          <article class="nrg-review nrg-glass">
-            <span class="nrg-stars" aria-label="5 / 5">
-              {Array.from({ length: 5 }).map(() => <span class="nrg-star nrg-star--full"></span>)}
-            </span>
-            <h3 class="nrg-review__title">{review.title}</h3>
-            <p class="nrg-review__body">{review.body}</p>
-            <p class="nrg-review__meta">
-              <span class="nrg-review__author">{review.author}</span>
-              <span>{review.note}</span>
-            </p>
-          </article>
-        ))}
+        </ul>
       </div>
     </section>
 
     <section class="nrg-section nrg-section--alt" id="install">
-      <div class="nrg-docs-h nrg-reveal">
-        <h2 class="nrg-headline">Install</h2>
-        <p class="nrg-copy">Copy two files. No build step required for the kit itself.</p>
-      </div>
-      <div class="nrg-carousel" data-nrg-carousel>
-        <div class="nrg-carousel__track" data-nrg-track>
-          {plans.map((plan) => (
-            <article class:list={['nrg-plan', 'nrg-glass', plan.featured && 'nrg-plan--featured', plan.featured && 'nrg-glass--strong']} data-nrg-card>
-              <h3 class="nrg-plan__name">{plan.name}</h3>
-              <p class="nrg-plan__price">{plan.price}</p>
-              <p class="nrg-plan__desc">{plan.desc}</p>
-              <hr class="nrg-plan__rule" />
-              <ul class="nrg-plan__features">
-                {plan.points.map((point) => (
-                  <li>
-                    <svg viewBox="0 0 24 24" width="15" height="15" aria-hidden="true"><path d="M5 13l4 4L19 7" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg>
-                    <span>{point}</span>
-                  </li>
-                ))}
-              </ul>
-              <a class="nrg-btn nrg-btn--accent nrg-btn--sm nrg-plan__cta" href="/components">See HTML</a>
-            </article>
-          ))}
+      <div class="nrg-section__inner">
+        <div class="nrg-docs-h nrg-reveal">
+          <h2 class="bench-install__title">Install</h2>
+          <p class="nrg-copy">Copy two files. Prefix is <code>nrg-</code>. No build step for the kit itself.</p>
         </div>
-        <div class="nrg-carousel__nav">
-          <button class="nrg-carousel__arrow" type="button" data-nrg-prev aria-label="Previous" disabled>
-            <svg viewBox="0 0 24 24" width="18" height="18"><path d="M15 5l-7 7 7 7" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
-          </button>
-          <button class="nrg-carousel__arrow" type="button" data-nrg-next aria-label="Next">
-            <svg viewBox="0 0 24 24" width="18" height="18"><path d="M9 5l7 7-7 7" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
-          </button>
+        <div class="nrg-reveal" style="margin-top: 8px;">
+          <code class="nrg-code">{snippet}</code>
         </div>
-      </div>
-      <div class="nrg-section__inner nrg-reveal" style="margin-top: 28px;">
-        <code class="nrg-code">{`<link rel="stylesheet" href="nrg.css" />
-<script type="module" src="nrg.js"></script>
-<body class="nrg-root">
-  <div class="nrg-glass">Hello, frosted world.</div>
-</body>`}</code>
+        <div class="bench-install__links nrg-reveal">
+          <a class="nrg-btn nrg-btn--accent nrg-btn--sm" href="/components">Kitchen sink</a>
+          <a class="nrg-btn nrg-btn--ghost nrg-btn--sm" href="/themes">Themes</a>
+        </div>
       </div>
     </section>
   </main>
   <Footer />
 </Base>
+
+<style is:global>
+  @import url('https://fonts.googleapis.com/css2?family=Instrument+Sans:wght@500;600;700&display=swap');
+
+  .bench {
+    --bench-ink: #0c1f24;
+    --bench-teal: #1a6b6a;
+    --bench-mint: #7ec8c0;
+    --bench-fog: #d8ece8;
+  }
+
+  /* —— Hero —— */
+  .bench-hero {
+    position: relative;
+    min-height: 100svh;
+    display: grid;
+    place-items: center;
+    overflow: hidden;
+    color: #f4fbf9;
+    background: var(--bench-ink);
+  }
+  .bench-hero__field {
+    position: absolute;
+    inset: 0;
+    overflow: hidden;
+  }
+  .bench-hero__drift {
+    position: absolute;
+    inset: -18%;
+    background:
+      repeating-linear-gradient(
+        -18deg,
+        transparent 0 10px,
+        rgba(126, 200, 192, 0.07) 10px 11px
+      ),
+      repeating-linear-gradient(
+        72deg,
+        transparent 0 18px,
+        rgba(26, 107, 106, 0.35) 18px 19px
+      ),
+      radial-gradient(ellipse at 20% 30%, rgba(126, 200, 192, 0.45), transparent 55%),
+      radial-gradient(ellipse at 80% 70%, rgba(26, 107, 106, 0.55), transparent 50%),
+      linear-gradient(145deg, #061416 0%, #0c1f24 40%, #14363a 100%);
+    animation: bench-drift 18s ease-in-out infinite alternate;
+    will-change: transform;
+  }
+  @keyframes bench-drift {
+    0% { transform: scale(1.05) translate(0, 0) rotate(0deg); }
+    100% { transform: scale(1.12) translate(-1.5%, 1%) rotate(1.5deg); }
+  }
+  .bench-hero__content {
+    position: relative;
+    z-index: 1;
+    text-align: center;
+    padding: 100px 22px 72px;
+    max-width: 820px;
+  }
+  .bench-brand {
+    margin: 0 0 22px;
+    font-family: 'Instrument Sans', var(--nrg-font);
+    font-size: clamp(52px, 11vw, 96px);
+    font-weight: 700;
+    letter-spacing: -0.04em;
+    line-height: 0.95;
+  }
+  .bench-hero__line {
+    margin: 0 auto 32px;
+    max-width: 34ch;
+    font-family: 'Instrument Sans', var(--nrg-font);
+    font-size: clamp(18px, 2.4vw, 22px);
+    font-weight: 500;
+    line-height: 1.45;
+    letter-spacing: -0.01em;
+    color: rgba(244, 251, 249, 0.88);
+  }
+  .bench-hero__cta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+    justify-content: center;
+  }
+  .bench-hero__ghost {
+    background: rgba(255, 255, 255, 0.08);
+    color: #f4fbf9;
+    border-color: rgba(255, 255, 255, 0.28);
+  }
+  .bench-hero__ghost:hover {
+    background: rgba(255, 255, 255, 0.14);
+    color: #fff;
+    border-color: rgba(255, 255, 255, 0.45);
+  }
+
+  /* —— Stage —— */
+  .bench-stage-wrap {
+    padding: 72px 0 40px;
+    background: var(--nrg-bg);
+  }
+  .bench-stage-intro {
+    max-width: var(--nrg-wide);
+    margin: 0 auto 28px;
+    padding: 0 22px;
+  }
+  .bench-stage-intro__title {
+    margin: 0;
+    font-family: 'Instrument Sans', var(--nrg-font);
+    font-size: clamp(36px, 5vw, 52px);
+    font-weight: 700;
+    letter-spacing: -0.03em;
+  }
+  .bench-stage-intro__sub {
+    margin: 10px 0 0;
+    max-width: 42ch;
+    font-size: 18px;
+    line-height: 1.5;
+    color: var(--nrg-text-dim);
+  }
+
+  .bench-stage {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 16px;
+  }
+  .bench-stage__viewport {
+    position: relative;
+    height: min(72vh, 640px);
+    min-height: 420px;
+    border-radius: 28px;
+    overflow: hidden;
+    isolation: isolate;
+    box-shadow: 0 24px 60px rgba(12, 31, 36, 0.18);
+  }
+
+  .bench-backdrop {
+    position: absolute;
+    inset: 0;
+    opacity: 0;
+    transition: opacity 0.45s var(--nrg-ease);
+    pointer-events: none;
+  }
+  .bench-stage__viewport[data-backdrop='stripes'] .bench-backdrop--stripes,
+  .bench-stage__viewport[data-backdrop='wall'] .bench-backdrop--wall,
+  .bench-stage__viewport[data-backdrop='grid'] .bench-backdrop--grid {
+    opacity: 1;
+  }
+
+  .bench-backdrop--stripes {
+    background:
+      repeating-linear-gradient(
+        90deg,
+        #0e2a2c 0 7px,
+        #1f5c58 7px 14px,
+        #7ec8c0 14px 16px,
+        #14363a 16px 24px
+      ),
+      linear-gradient(180deg, #0a1c1e, #1a4a48);
+    background-size: 48px 100%, 100% 100%;
+    animation: bench-stripe 22s linear infinite;
+  }
+  @keyframes bench-stripe {
+    from { background-position: 0 0, 0 0; }
+    to { background-position: 48px 0, 0 0; }
+  }
+
+  .bench-backdrop--wall {
+    background: linear-gradient(160deg, #102628, #1a4543 55%, #0c1f24);
+    color: rgba(216, 236, 232, 0.55);
+    overflow: hidden;
+  }
+  .bench-wall {
+    position: absolute;
+    inset: -8%;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    transform: rotate(-6deg);
+    animation: bench-wall 40s linear infinite;
+    font-family: 'Instrument Sans', var(--nrg-font);
+    font-size: 22px;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    white-space: nowrap;
+    line-height: 1.35;
+    user-select: none;
+  }
+  .bench-wall p { margin: 0; }
+  .bench-wall p:nth-child(even) {
+    color: rgba(126, 200, 192, 0.35);
+    transform: translateX(-8%);
+  }
+  @keyframes bench-wall {
+    from { transform: rotate(-6deg) translateX(0); }
+    to { transform: rotate(-6deg) translateX(-12%); }
+  }
+
+  .bench-backdrop--grid {
+    background-color: #0d2224;
+    background-image:
+      linear-gradient(rgba(126, 200, 192, 0.35) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(126, 200, 192, 0.35) 1px, transparent 1px),
+      linear-gradient(rgba(250, 45, 72, 0.45) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(250, 45, 72, 0.45) 1px, transparent 1px),
+      radial-gradient(circle at 30% 40%, rgba(126, 200, 192, 0.35), transparent 45%),
+      radial-gradient(circle at 70% 65%, rgba(26, 107, 106, 0.5), transparent 40%);
+    background-size:
+      28px 28px,
+      28px 28px,
+      112px 112px,
+      112px 112px,
+      100% 100%,
+      100% 100%;
+    animation: bench-grid 16s ease-in-out infinite alternate;
+  }
+  @keyframes bench-grid {
+    from { background-position: 0 0, 0 0, 0 0, 0 0, 0 0, 0 0; }
+    to { background-position: 14px 14px, 14px 14px, 28px 0, 0 28px, 0 0, 0 0; }
+  }
+
+  .bench-specimens {
+    position: absolute;
+    inset: 0;
+    z-index: 2;
+    pointer-events: none;
+  }
+  .bench-float {
+    position: absolute;
+    pointer-events: auto;
+    color: var(--nrg-text);
+  }
+  .bench-float--a {
+    top: 14%;
+    left: 8%;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 10px 18px;
+    animation: bench-float-a 7s ease-in-out infinite alternate;
+  }
+  .bench-float--b {
+    top: 28%;
+    right: 10%;
+    width: min(320px, 42vw);
+    border-radius: 22px;
+    padding: 22px 22px 24px;
+    animation: bench-float-b 9s ease-in-out infinite alternate;
+  }
+  .bench-float--c {
+    bottom: 12%;
+    left: 18%;
+    width: min(340px, 48vw);
+    border-radius: 22px;
+    padding: 22px 22px 24px;
+    animation: bench-float-c 8s ease-in-out infinite alternate;
+  }
+  @keyframes bench-float-a {
+    from { transform: translateY(0); }
+    to { transform: translateY(10px); }
+  }
+  @keyframes bench-float-b {
+    from { transform: translateY(0) translateX(0); }
+    to { transform: translateY(-12px) translateX(-6px); }
+  }
+  @keyframes bench-float-c {
+    from { transform: translateY(0); }
+    to { transform: translateY(8px); }
+  }
+
+  .bench-chip {
+    font-size: 13px;
+    font-weight: 600;
+    letter-spacing: -0.01em;
+  }
+  .bench-chip-dim {
+    font-size: 12px;
+    color: var(--nrg-text-dim);
+  }
+  .bench-specimen__tag {
+    margin: 0 0 6px;
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--nrg-accent);
+  }
+  .bench-specimen__title {
+    margin: 0 0 8px;
+    font-family: 'Instrument Sans', var(--nrg-font);
+    font-size: 22px;
+    font-weight: 700;
+    letter-spacing: -0.02em;
+  }
+  .bench-specimen__body {
+    margin: 0;
+    font-size: 14px;
+    line-height: 1.45;
+    color: var(--nrg-text-dim);
+  }
+  .bench-specimen__row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-top: 16px;
+  }
+  .bench-ghost-on-stage {
+    background: color-mix(in srgb, var(--nrg-bg) 70%, transparent);
+  }
+
+  /* Strength toggle: force all specimen surfaces to one blur level */
+  .bench-specimens[data-strength='default'] .specimen-surface {
+    backdrop-filter: blur(18px) saturate(1.35) !important;
+    -webkit-backdrop-filter: blur(18px) saturate(1.35) !important;
+  }
+  .bench-specimens[data-strength='strong'] .specimen-surface {
+    backdrop-filter: blur(24px) saturate(1.45) !important;
+    -webkit-backdrop-filter: blur(24px) saturate(1.45) !important;
+  }
+
+  .bench-controls {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px 36px;
+    margin-top: 20px;
+    padding: 4px 6px;
+  }
+  .bench-controls__group {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 10px 14px;
+  }
+  .bench-controls__label {
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--nrg-text-dim);
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+  }
+  .bench-controls__btns {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+  .bench-toggle {
+    appearance: none;
+    border: 1px solid var(--nrg-border);
+    background: var(--nrg-surface);
+    color: var(--nrg-text);
+    font: inherit;
+    font-size: 14px;
+    font-weight: 500;
+    padding: 8px 14px;
+    border-radius: 980px;
+    cursor: pointer;
+    transition: background 0.2s, border-color 0.2s, color 0.2s;
+  }
+  .bench-toggle:hover {
+    border-color: var(--bench-teal);
+  }
+  .bench-toggle.is-on {
+    background: var(--bench-ink);
+    border-color: var(--bench-ink);
+    color: #f4fbf9;
+  }
+
+  /* —— Recipe —— */
+  .bench-recipe {
+    max-width: 720px;
+    margin: 0 auto;
+  }
+  .bench-recipe__head { margin-bottom: 36px; }
+  .bench-recipe__title {
+    margin: 0;
+    font-family: 'Instrument Sans', var(--nrg-font);
+    font-size: clamp(36px, 5vw, 52px);
+    font-weight: 700;
+    letter-spacing: -0.03em;
+  }
+  .bench-recipe__sub {
+    margin: 10px 0 0;
+    font-size: 18px;
+    color: var(--nrg-text-dim);
+  }
+  .bench-recipe__list {
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+    border-top: 1px solid var(--nrg-border);
+  }
+  .bench-recipe__item {
+    display: grid;
+    grid-template-columns: 64px 1fr;
+    gap: 18px;
+    padding: 22px 0;
+    border-bottom: 1px solid var(--nrg-border);
+  }
+  .bench-recipe__kind {
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--bench-teal);
+    padding-top: 4px;
+  }
+  .bench-recipe__item--skip .bench-recipe__kind {
+    color: var(--nrg-accent);
+  }
+  .bench-recipe__label {
+    margin: 0 0 6px;
+    font-family: 'Instrument Sans', var(--nrg-font);
+    font-size: 22px;
+    font-weight: 600;
+    letter-spacing: -0.02em;
+  }
+  .bench-recipe__body {
+    margin: 0;
+    font-size: 16px;
+    line-height: 1.5;
+    color: var(--nrg-text-dim);
+  }
+
+  /* —— Install —— */
+  .bench-install__title {
+    margin: 0;
+    font-family: 'Instrument Sans', var(--nrg-font);
+    font-size: clamp(36px, 5vw, 52px);
+    font-weight: 700;
+    letter-spacing: -0.03em;
+  }
+  .bench-install__links {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-top: 24px;
+  }
+
+  @media (max-width: 720px) {
+    .bench-stage__viewport {
+      height: auto;
+      min-height: 520px;
+    }
+    .bench-float--a {
+      top: 8%;
+      left: 5%;
+      right: 5%;
+      width: auto;
+      justify-content: space-between;
+    }
+    .bench-float--b {
+      top: 22%;
+      left: 5%;
+      right: 5%;
+      width: auto;
+    }
+    .bench-float--c {
+      bottom: 8%;
+      left: 5%;
+      right: 5%;
+      width: auto;
+    }
+    .bench-recipe__item {
+      grid-template-columns: 48px 1fr;
+      gap: 12px;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .bench-hero__drift,
+    .bench-backdrop--stripes,
+    .bench-wall,
+    .bench-backdrop--grid,
+    .bench-float--a,
+    .bench-float--b,
+    .bench-float--c {
+      animation: none !important;
+    }
+  }
+</style>
+
+<script>
+  function bindBench() {
+    const stage = document.querySelector('[data-bench-stage]');
+    if (!stage) return;
+
+    const viewport = stage.querySelector('[data-bench-viewport]');
+    const specimens = stage.querySelector('[data-bench-specimens]');
+    if (!(viewport instanceof HTMLElement) || !(specimens instanceof HTMLElement)) return;
+
+    const backdropBtns = stage.querySelectorAll('[data-backdrop-btn]');
+    const strengthBtns = stage.querySelectorAll('[data-strength-btn]');
+
+    backdropBtns.forEach((btn) => {
+      btn.addEventListener('click', () => {
+        const id = btn.getAttribute('data-backdrop-btn');
+        if (!id) return;
+        viewport.setAttribute('data-backdrop', id);
+        backdropBtns.forEach((b) => b.classList.toggle('is-on', b === btn));
+      });
+    });
+
+    strengthBtns.forEach((btn) => {
+      btn.addEventListener('click', () => {
+        const id = btn.getAttribute('data-strength-btn');
+        if (!id) return;
+        specimens.setAttribute('data-strength', id);
+        strengthBtns.forEach((b) => b.classList.toggle('is-on', b === btn));
+      });
+    });
+  }
+
+  bindBench();
+  document.addEventListener('astro:page-load', bindBench);
+</script>
