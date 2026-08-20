@@ -40,6 +40,12 @@ const plans = [
   { name: 'CSS + JS', price: 'nrg.js', desc: 'Reveal, carousel, hero, modals.', points: ['Intersection reveals', 'Snap carousels', 'Hash-driven dialogs'], featured: true },
   { name: 'Demo', price: 'This site', desc: 'A full landing page built only with the kit.', points: ['Kitchen sink', 'Theme playground', 'MIT license'], featured: false },
 ];
+
+const snippet = `<link rel="stylesheet" href="nrg.css" />
+<script type="module" src="nrg.js"></script>
+<body class="nrg-root">
+  <div class="nrg-glass">Hello, frosted world.</div>
+</body>`;
 ---
 
 <Base>
@@ -49,7 +55,7 @@ const plans = [
       <div class="nrg-hero__bg" aria-hidden="true"></div>
       <div class="nrg-hero__content" data-nrg-parallax>
         <h1 class="nrg-hero__headline">Liquid Glass<br />with No Refraction</h1>
-        <p class="nrg-hero__sub">磨砂、高光、胶囊导航。接近 iOS 27 Liquid Glass 的观感，故意不做折射。</p>
+        <p class="nrg-hero__sub">Frost, highlights, capsule nav. Close to the iOS 27 Liquid Glass look — without the refraction.</p>
         <a class="nrg-btn nrg-btn--accent" href="#install">Get the CSS</a>
       </div>
       <button class="nrg-hero__pause" type="button" data-nrg-hero-pause aria-label="Pause background">
@@ -231,11 +237,7 @@ const plans = [
         </div>
       </div>
       <div class="nrg-section__inner nrg-reveal" style="margin-top: 28px;">
-        <code class="nrg-code">{`<link rel="stylesheet" href="nrg.css" />
-<script type="module" src="nrg.js"></script>
-<body class="nrg-root">
-  <div class="nrg-glass">Hello, frosted world.</div>
-</body>`}</code>
+        <code class="nrg-code">{snippet}</code>
       </div>
     </section>
   </main>
