@@ -1,0 +1,243 @@
+---
+import Base from '../layouts/Base.astro';
+import Nav from '../components/Nav.astro';
+import Footer from '../components/Footer.astro';
+
+const promo = [
+  { tag: 'Material', title: 'Frosted, not liquid', desc: 'Blur, saturation, and inner highlights. No displacement map, no chromatic split, no fake IOR.' },
+  { tag: 'Prefix', title: 'nrg- everywhere', desc: 'Drop css/nrg.css into any page. Classes are prefixed so they will not collide with your app.' },
+  { tag: 'Patterns', title: 'A whole marketing page', desc: 'Pill nav, aurora hero, snap carousel, compare table, reviews, plans, and hash modals.' },
+  { tag: 'Motion', title: 'Scroll, then stop', desc: 'Reveal-on-view, staggered children, hero parallax. Respects prefers-reduced-motion.' },
+  { tag: 'Theme', title: 'One accent token', desc: 'Swap --nrg-accent and the buttons, stars, and glass CTAs follow. Light and dark included.' },
+];
+
+const more = [
+  { tag: 'Nav', title: 'Floating pill', desc: 'Fixed frosted bar with brand, links, and a capsule CTA.' },
+  { tag: 'Hero', title: 'Aurora wash', desc: 'Layered radials, pause control, copy that fades as you scroll.' },
+  { tag: 'Glass', title: 'Two strengths', desc: 'Default blur(18px) or --strong at 24px. Pill and scroll variants included.' },
+  { tag: 'Docs', title: 'Copy the HTML', desc: 'The components page is a kitchen sink with snippets, not a component framework.' },
+];
+
+const compareRows = [
+  { name: 'backdrop-filter blur', cells: [true, true, true] },
+  { name: 'Inner highlight rim', cells: [true, true, true] },
+  { name: 'CSS variables / theming', cells: [true, true, true] },
+  { name: 'Safari-stable fallback', cells: [true, true, true] },
+  { name: 'Marketing patterns', cells: [false, true, true] },
+  { name: 'Reveal + carousel JS', cells: [false, true, true] },
+  { name: 'SVG displacement / IOR', cells: [false, false, false] },
+  { name: 'WebGL refraction', cells: [false, false, false] },
+];
+
+const reviews = [
+  { title: 'Finally, just glass', body: 'I wanted the Apple marketing-site look without a 200-line SVG filter. This is that.', author: 'Maya K.', note: 'Design engineer' },
+  { title: 'Does not melt on Safari', body: 'The no-refraction call is the feature. Blur and highlights render the same in Chromium and WebKit.', author: 'Jon Park', note: 'Frontend' },
+  { title: 'Ships as CSS', body: 'Copied two files, restyled a docs site in an afternoon. Prefix kept our existing classes intact.', author: 'Rin', note: 'Indie hacker' },
+];
+
+const plans = [
+  { name: 'CSS', price: 'nrg.css', desc: 'Tokens, glass, type, and patterns.', points: ['Drop-in stylesheet', 'nrg- class prefix', 'Light and dark tokens'], featured: false },
+  { name: 'CSS + JS', price: 'nrg.js', desc: 'Reveal, carousel, hero, modals.', points: ['Intersection reveals', 'Snap carousels', 'Hash-driven dialogs'], featured: true },
+  { name: 'Demo', price: 'This site', desc: 'A full landing page built only with the kit.', points: ['Kitchen sink', 'Theme playground', 'MIT license'], featured: false },
+];
+---
+
+<Base>
+  <Nav current="home" />
+  <main>
+    <section class="nrg-hero" id="top">
+      <div class="nrg-hero__bg" aria-hidden="true"></div>
+      <div class="nrg-hero__content" data-nrg-parallax>
+        <h1 class="nrg-hero__headline">Liquid Glass<br />with No Refraction</h1>
+        <p class="nrg-hero__sub">磨砂、高光、胶囊导航。接近 iOS 27 Liquid Glass 的观感，故意不做折射。</p>
+        <a class="nrg-btn nrg-btn--accent" href="#install">Get the CSS</a>
+      </div>
+      <button class="nrg-hero__pause" type="button" data-nrg-hero-pause aria-label="Pause background">
+        <svg viewBox="0 0 24 24" width="14" height="14" aria-hidden="true"><rect x="6" y="5" width="4" height="14" rx="1" fill="currentColor"/><rect x="14" y="5" width="4" height="14" rx="1" fill="currentColor"/></svg>
+      </button>
+    </section>
+
+    <section class="nrg-section nrg-section--alt" id="why">
+      <div class="nrg-docs-h nrg-reveal">
+        <h2 class="nrg-headline">Why this kit</h2>
+      </div>
+      <div class="nrg-carousel" data-nrg-carousel>
+        <div class="nrg-carousel__track" data-nrg-track>
+          {promo.map((card) => (
+            <article class="nrg-pcard nrg-glass">
+              <div class="nrg-pcard__tag">{card.tag}</div>
+              <h3 class="nrg-pcard__title">{card.title}</h3>
+              <p class="nrg-pcard__desc">{card.desc}</p>
+            </article>
+          ))}
+        </div>
+        <div class="nrg-carousel__nav">
+          <button class="nrg-carousel__arrow" type="button" data-nrg-prev aria-label="Previous" disabled>
+            <svg viewBox="0 0 24 24" width="18" height="18"><path d="M15 5l-7 7 7 7" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </button>
+          <button class="nrg-carousel__arrow" type="button" data-nrg-next aria-label="Next">
+            <svg viewBox="0 0 24 24" width="18" height="18"><path d="M9 5l7 7-7 7" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </button>
+        </div>
+      </div>
+    </section>
+
+    <section class="nrg-media">
+      <div class="nrg-media__frame nrg-media--piano nrg-glass nrg-glass--strong nrg-reveal">
+        <div class="nrg-media__overlay"></div>
+        <div class="nrg-media__text">
+          <p class="nrg-media__eyebrow">Material</p>
+          <h2 class="nrg-media__headline">Blur is the whole trick.</h2>
+        </div>
+        <p class="nrg-media__note">No feDisplacementMap · No WebGL</p>
+      </div>
+    </section>
+
+    <section class="nrg-section" id="features">
+      <div class="nrg-split">
+        <div class="nrg-split__row nrg-reveal" data-nrg-stagger>
+          <div class="nrg-split__text">
+            <p class="nrg-split__tag">Surfaces</p>
+            <h2 class="nrg-split__headline">Glass that stays put</h2>
+            <p class="nrg-copy">The source site skipped refraction on purpose. This kit keeps that: translucent fill, saturate, inset light. Same in Safari and Chrome.</p>
+          </div>
+          <div class="nrg-split__tile nrg-glass nrg-glass--strong" style="background: linear-gradient(160deg, #c0143a, #7a0e44); color: #fff;">
+            <p class="nrg-headline" style="font-size: 36px; color: #fff;">frosted</p>
+          </div>
+        </div>
+        <div class="nrg-split__row nrg-split__row--flip nrg-reveal" data-nrg-stagger>
+          <div class="nrg-split__text">
+            <p class="nrg-split__tag">Tokens</p>
+            <h2 class="nrg-split__headline">One accent, whole page</h2>
+            <p class="nrg-copy">--nrg-accent drives buttons, tags, stars, and featured plan rings. Dark theme swaps the gray scale, not the glass recipe.</p>
+          </div>
+          <div class="nrg-split__tile nrg-glass" style="background: var(--nrg-bg-alt);">
+            <span class="nrg-btn nrg-btn--accent">Accent</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="nrg-section nrg-section--alt">
+      <div class="nrg-docs-h nrg-reveal">
+        <h2 class="nrg-headline">And the rest of the page</h2>
+      </div>
+      <div class="nrg-bento">
+        {more.map((card) => (
+          <article class="nrg-mcard nrg-glass nrg-reveal">
+            <div class="nrg-mcard__tag">{card.tag}</div>
+            <h3 class="nrg-mcard__title">{card.title}</h3>
+            <p class="nrg-mcard__desc">{card.desc}</p>
+          </article>
+        ))}
+      </div>
+    </section>
+
+    <section class="nrg-section nrg-compare" id="compare">
+      <div class="nrg-compare__head nrg-reveal" data-nrg-stagger>
+        <h2 class="nrg-compare__title">What you get. What you don’t.</h2>
+        <p class="nrg-compare__sub">Refraction is a non-goal, listed in the last rows on purpose.</p>
+      </div>
+      <div class="nrg-compare__scroll nrg-glass nrg-glass--scroll nrg-reveal">
+        <table class="nrg-compare__table">
+          <thead>
+            <tr>
+              <th scope="col"></th>
+              <th scope="col">Tokens</th>
+              <th scope="col">Patterns</th>
+              <th scope="col" class="is-accent">This kit</th>
+            </tr>
+          </thead>
+          <tbody>
+            {compareRows.map((row) => (
+              <tr>
+                <th scope="row">{row.name}</th>
+                {row.cells.map((on, i) => (
+                  <td class={i === 2 ? 'is-accent' : undefined}>
+                    {on ? (
+                      <svg viewBox="0 0 24 24" width="17" height="17" aria-label="Yes"><path fill="currentColor" d="M9.55 17.05 4.5 12l1.4-1.4 3.65 3.65 8.55-8.55 1.4 1.4z"/></svg>
+                    ) : (
+                      <span class="nrg-compare__dash">—</span>
+                    )}
+                  </td>
+                ))}
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <section class="nrg-section nrg-section--alt" id="reviews">
+      <div class="nrg-reviews__head nrg-reveal" data-nrg-stagger>
+        <h2 class="nrg-reviews__title">What people would say</h2>
+        <div class="nrg-reviews__summary">
+          <span class="nrg-reviews__score">5.0</span>
+          <span class="nrg-stars nrg-stars--lg" aria-hidden="true">
+            {Array.from({ length: 5 }).map(() => <span class="nrg-star nrg-star--full"></span>)}
+          </span>
+          <span class="nrg-reviews__note">Demo quotes, not App Store reviews</span>
+        </div>
+      </div>
+      <div class="nrg-reviews__grid nrg-reveal" data-nrg-stagger>
+        {reviews.map((review) => (
+          <article class="nrg-review nrg-glass">
+            <span class="nrg-stars" aria-label="5 / 5">
+              {Array.from({ length: 5 }).map(() => <span class="nrg-star nrg-star--full"></span>)}
+            </span>
+            <h3 class="nrg-review__title">{review.title}</h3>
+            <p class="nrg-review__body">{review.body}</p>
+            <p class="nrg-review__meta">
+              <span class="nrg-review__author">{review.author}</span>
+              <span>{review.note}</span>
+            </p>
+          </article>
+        ))}
+      </div>
+    </section>
+
+    <section class="nrg-section nrg-section--alt" id="install">
+      <div class="nrg-docs-h nrg-reveal">
+        <h2 class="nrg-headline">Install</h2>
+        <p class="nrg-copy">Copy two files. No build step required for the kit itself.</p>
+      </div>
+      <div class="nrg-carousel" data-nrg-carousel>
+        <div class="nrg-carousel__track" data-nrg-track>
+          {plans.map((plan) => (
+            <article class:list={['nrg-plan', 'nrg-glass', plan.featured && 'nrg-plan--featured', plan.featured && 'nrg-glass--strong']} data-nrg-card>
+              <h3 class="nrg-plan__name">{plan.name}</h3>
+              <p class="nrg-plan__price">{plan.price}</p>
+              <p class="nrg-plan__desc">{plan.desc}</p>
+              <hr class="nrg-plan__rule" />
+              <ul class="nrg-plan__features">
+                {plan.points.map((point) => (
+                  <li>
+                    <svg viewBox="0 0 24 24" width="15" height="15" aria-hidden="true"><path d="M5 13l4 4L19 7" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                    <span>{point}</span>
+                  </li>
+                ))}
+              </ul>
+              <a class="nrg-btn nrg-btn--accent nrg-btn--sm nrg-plan__cta" href="/components">See HTML</a>
+            </article>
+          ))}
+        </div>
+        <div class="nrg-carousel__nav">
+          <button class="nrg-carousel__arrow" type="button" data-nrg-prev aria-label="Previous" disabled>
+            <svg viewBox="0 0 24 24" width="18" height="18"><path d="M15 5l-7 7 7 7" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </button>
+          <button class="nrg-carousel__arrow" type="button" data-nrg-next aria-label="Next">
+            <svg viewBox="0 0 24 24" width="18" height="18"><path d="M9 5l7 7-7 7" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </button>
+        </div>
+      </div>
+      <div class="nrg-section__inner nrg-reveal" style="margin-top: 28px;">
+        <code class="nrg-code">{`<link rel="stylesheet" href="nrg.css" />
+<script type="module" src="nrg.js"></script>
+<body class="nrg-root">
+  <div class="nrg-glass">Hello, frosted world.</div>
+</body>`}</code>
+      </div>
+    </section>
+  </main>
+  <Footer />
+</Base>

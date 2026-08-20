@@ -1,0 +1,122 @@
+---
+import Base from '../layouts/Base.astro';
+import Nav from '../components/Nav.astro';
+import Footer from '../components/Footer.astro';
+
+const accents = [
+  { id: 'rose', accent: '#fa2d48', hover: '#fb3a54', soft: '#fc3c6e', label: 'Rose' },
+  { id: 'blue', accent: '#0071e3', hover: '#1482f0', soft: '#47a2ff', label: 'Blue' },
+  { id: 'green', accent: '#1f8a4c', hover: '#27a05a', soft: '#34c76e', label: 'Green' },
+  { id: 'violet', accent: '#7d3cff', hover: '#8b55ff', soft: '#a77cff', label: 'Violet' },
+];
+---
+
+<Base title="Themes — No Refraction">
+  <Nav current="themes" />
+  <main>
+    <section class="nrg-hero" style="min-height: 420px;">
+      <div class="nrg-hero__bg" aria-hidden="true"></div>
+      <div class="nrg-hero__content">
+        <h1 class="nrg-hero__headline" style="font-size: 56px;">Themes</h1>
+        <p class="nrg-hero__sub">Light, dark, and an accent token. The glass recipe does not change.</p>
+      </div>
+    </section>
+
+    <section class="nrg-section">
+      <div class="nrg-docs-h nrg-reveal">
+        <p class="nrg-eyebrow">Appearance</p>
+        <h2 class="nrg-headline">Mode</h2>
+        <div class="nrg-swatch-row">
+          <button class="nrg-swatch" type="button" data-nrg-theme-btn="light">Light</button>
+          <button class="nrg-swatch" type="button" data-nrg-theme-btn="dark">Dark</button>
+        </div>
+      </div>
+    </section>
+
+    <section class="nrg-section nrg-section--alt">
+      <div class="nrg-docs-h nrg-reveal">
+        <p class="nrg-eyebrow">Color</p>
+        <h2 class="nrg-headline">Accent</h2>
+        <div class="nrg-swatch-row">
+          {accents.map((item) => (
+            <button
+              class="nrg-swatch"
+              type="button"
+              data-nrg-accent
+              data-accent={item.accent}
+              data-hover={item.hover}
+              data-soft={item.soft}
+            >
+              {item.label}
+            </button>
+          ))}
+        </div>
+        <code class="nrg-code">{`:root {
+  --nrg-accent: #fa2d48;
+  --nrg-accent-hover: #fb3a54;
+  --nrg-accent-soft: #fc3c6e;
+}`}</code>
+      </div>
+
+      <div class="nrg-bento" style="margin-top: 40px;">
+        <article class="nrg-mcard nrg-glass">
+          <div class="nrg-mcard__tag">Live</div>
+          <h3 class="nrg-mcard__title">Glass card</h3>
+          <p class="nrg-mcard__desc">This card, the buttons, and the stars all read --nrg-accent.</p>
+        </article>
+        <article class="nrg-mcard nrg-glass nrg-glass--strong">
+          <div class="nrg-mcard__tag">CTA</div>
+          <h3 class="nrg-mcard__title">Try a control</h3>
+          <p class="nrg-mcard__desc" style="margin-bottom: 16px;">Same material, new hue.</p>
+          <a class="nrg-btn nrg-btn--accent nrg-btn--sm" href="/components">Components</a>
+        </article>
+        <article class="nrg-review nrg-glass">
+          <span class="nrg-stars" aria-hidden="true">
+            {Array.from({ length: 5 }).map(() => <span class="nrg-star nrg-star--full"></span>)}
+          </span>
+          <h3 class="nrg-review__title">Stars follow the token</h3>
+          <p class="nrg-review__body">No extra CSS for each theme color.</p>
+        </article>
+      </div>
+    </section>
+  </main>
+  <Footer />
+  <script>
+    const root = document.documentElement;
+    const themeBtns = document.querySelectorAll('[data-nrg-theme-btn]');
+    const accentBtns = document.querySelectorAll('[data-nrg-accent]');
+
+    const markTheme = () => {
+      const current = root.getAttribute('data-nrg-theme') || 'light';
+      themeBtns.forEach((btn) => {
+        btn.classList.toggle('is-on', btn.getAttribute('data-nrg-theme-btn') === current);
+      });
+    };
+
+    themeBtns.forEach((btn) => {
+      btn.addEventListener('click', () => {
+        const theme = btn.getAttribute('data-nrg-theme-btn') || 'light';
+        root.setAttribute('data-nrg-theme', theme);
+        localStorage.setItem('nrg-theme', theme);
+        markTheme();
+      });
+    });
+
+    accentBtns.forEach((btn) => {
+      btn.addEventListener('click', () => {
+        const accent = btn.getAttribute('data-accent');
+        const hover = btn.getAttribute('data-hover');
+        const soft = btn.getAttribute('data-soft');
+        if (accent) root.style.setProperty('--nrg-accent', accent);
+        if (hover) root.style.setProperty('--nrg-accent-hover', hover);
+        if (soft) root.style.setProperty('--nrg-accent-soft', soft);
+        localStorage.setItem('nrg-accent', accent || '');
+        localStorage.setItem('nrg-accent-hover', hover || '');
+        localStorage.setItem('nrg-accent-soft', soft || '');
+        accentBtns.forEach((other) => other.classList.toggle('is-on', other === btn));
+      });
+    });
+
+    markTheme();
+  </script>
+</Base>

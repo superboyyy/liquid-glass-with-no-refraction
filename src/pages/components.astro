@@ -1,0 +1,93 @@
+---
+import Base from '../layouts/Base.astro';
+import Nav from '../components/Nav.astro';
+import Footer from '../components/Footer.astro';
+---
+
+<Base title="Components — No Refraction">
+  <Nav current="components" />
+  <main>
+    <section class="nrg-hero" style="min-height: 420px;">
+      <div class="nrg-hero__bg" aria-hidden="true"></div>
+      <div class="nrg-hero__content">
+        <h1 class="nrg-hero__headline" style="font-size: 56px;">Components</h1>
+        <p class="nrg-hero__sub">Kitchen sink for the nrg- prefix. Copy the HTML, keep the CSS file.</p>
+      </div>
+    </section>
+
+    <section class="nrg-section">
+      <div class="nrg-docs-h nrg-reveal">
+        <p class="nrg-eyebrow">Primitives</p>
+        <h2 class="nrg-headline">Buttons</h2>
+        <div style="display: flex; flex-wrap: wrap; gap: 12px; margin-top: 24px; align-items: center;">
+          <a class="nrg-btn nrg-btn--accent" href="#">Accent</a>
+          <a class="nrg-btn nrg-btn--ghost" href="#">Ghost</a>
+          <a class="nrg-btn nrg-btn--link" href="#">Link</a>
+          <a class="nrg-btn nrg-btn--accent nrg-btn--sm" href="#">Small</a>
+        </div>
+        <code class="nrg-code">{`<a class="nrg-btn nrg-btn--accent">Accent</a>
+<a class="nrg-btn nrg-btn--ghost">Ghost</a>`}</code>
+      </div>
+    </section>
+
+    <section class="nrg-section nrg-section--alt">
+      <div class="nrg-docs-h nrg-reveal">
+        <p class="nrg-eyebrow">Material</p>
+        <h2 class="nrg-headline">Glass</h2>
+        <p class="nrg-copy">Default, strong, and pill. Still just blur — no refraction.</p>
+      </div>
+      <div class="nrg-bento nrg-reveal">
+        <div class="nrg-mcard nrg-glass">
+          <div class="nrg-mcard__tag">Default</div>
+          <h3 class="nrg-mcard__title">nrg-glass</h3>
+          <p class="nrg-mcard__desc">blur(18px) saturate(1.35) plus inset highlights.</p>
+        </div>
+        <div class="nrg-mcard nrg-glass nrg-glass--strong">
+          <div class="nrg-mcard__tag">Strong</div>
+          <h3 class="nrg-mcard__title">nrg-glass--strong</h3>
+          <p class="nrg-mcard__desc">blur(24px) for overlays and featured cards.</p>
+        </div>
+        <div class="nrg-mcard nrg-glass nrg-glass--pill" style="display: flex; align-items: center; justify-content: center; min-height: 120px;">
+          <strong>nrg-glass--pill</strong>
+        </div>
+      </div>
+      <div class="nrg-section__inner">
+        <code class="nrg-code">{`<div class="nrg-glass">Default</div>
+<div class="nrg-glass nrg-glass--strong">Strong</div>
+<div class="nrg-glass nrg-glass--pill">Pill</div>`}</code>
+      </div>
+    </section>
+
+    <section class="nrg-section">
+      <div class="nrg-docs-h nrg-reveal">
+        <p class="nrg-eyebrow">Type</p>
+        <h2 class="nrg-headline">Section titles</h2>
+        <p class="nrg-eyebrow" style="margin-top: 28px;">Eyebrow</p>
+        <h2 class="nrg-headline nrg-headline--accent">Headline accent</h2>
+        <p class="nrg-copy">Copy sits at 21px, dim color, max 40ch.</p>
+        <code class="nrg-code">{`<p class="nrg-eyebrow">Eyebrow</p>
+<h2 class="nrg-headline">Headline</h2>
+<p class="nrg-copy">Supporting text.</p>`}</code>
+      </div>
+    </section>
+
+    <section class="nrg-section nrg-section--alt">
+      <div class="nrg-docs-h nrg-reveal">
+        <p class="nrg-eyebrow">Feedback</p>
+        <h2 class="nrg-headline">Stars</h2>
+        <div class="nrg-reviews__summary" style="margin-top: 20px;">
+          <span class="nrg-stars nrg-stars--lg" aria-hidden="true">
+            <span class="nrg-star nrg-star--full"></span>
+            <span class="nrg-star nrg-star--full"></span>
+            <span class="nrg-star nrg-star--full"></span>
+            <span class="nrg-star nrg-star--half"></span>
+            <span class="nrg-star"></span>
+          </span>
+          <span class="nrg-reviews__note">full / half / empty</span>
+        </div>
+        <p style="margin-top: 24px;"><a class="nrg-btn nrg-btn--ghost nrg-btn--sm" href="#about">Open modal</a></p>
+      </div>
+    </section>
+  </main>
+  <Footer />
+</Base>
