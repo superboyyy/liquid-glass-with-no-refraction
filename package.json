@@ -2,18 +2,9 @@
   "name": "liquid-glass-with-no-refraction",
   "version": "0.1.0",
   "private": true,
-  "type": "module",
   "description": "Frosted-glass UI kit in the iOS 27 Liquid Glass vein: blur and inner highlights, no displacement maps, no IOR, no refraction.",
   "license": "MIT",
-  "scripts": {
-    "dev": "astro dev",
-    "build": "astro build",
-    "preview": "astro preview"
-  },
   "files": [
     "css"
-  ],
-  "devDependencies": {
-    "astro": "^4.16.0"
-  }
+  ]
 }
