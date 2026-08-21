@@ -2,9 +2,7 @@
 
 Unofficial frosted-glass CSS kit in the **iOS 27 Liquid Glass** vein: blur, saturation, and inner highlights. **No displacement maps, no IOR, no refraction.**
 
-This is not an Apple product and is not affiliated with Apple. The name describes the look — marketing-site glass without the refractive material.
-
-Visual language comes from the OMusic marketing site’s UI (tokens, pill nav, aurora hero, glass cards), with product branding, screenshots, and store links removed.
+This is not an Apple product and is not affiliated with Apple. The name describes the look — frosted marketing-site glass without the refractive material.
 
 ## Use it
 
@@ -17,18 +15,6 @@ Visual language comes from the OMusic marketing site’s UI (tokens, pill nav, a
 ```
 
 Class prefix is `nrg-`. Accent color is `--nrg-accent` (default `#fa2d48`). Dark mode: `data-nrg-theme="dark"` on `<html>`.
-
-## Demo
-
-```bash
-cd liquid-glass-with-no-refraction
-npm install
-npm run dev
-```
-
-- `/` landing page built only with the kit
-- `/components/` kitchen sink
-- `/themes/` light / dark / accent playground
 
 ## What ships
 
